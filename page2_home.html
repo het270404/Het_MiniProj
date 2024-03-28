@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
+    <style>
+        .bgbelow{
+            top:0px;
+            left:0;
+            width:100%;
+            position:absolute;
+            background-color:black;
+            z-index: -2;
+            height:1770px;
+        }
+
+        .bgimage{
+            background-image: url('modern-laundry-room_963305-204-transformed.jpeg');
+            position: absolute;
+            transform: translateY(-122px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            object-fit: cover;
+            object-position: center;
+            z-index: -1;
+        }
+
+        header{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding-top: 7px;
+            padding-bottom: 7px;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 2px 16px hsla(230, 75%, 32%, .15);
+            z-index: var(--z-fixed);
+        }
+
+        .navmenu{
+            list-style-type: none;
+            padding: 0;
+            margin-bottom:0;
+        }
+
+        .navbar{
+            height: var(--header-height);
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navlogo{
+            margin-left:15px;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            text-decoration:none;
+            color: white;
+            font-weight: var(--font-semi-bold);
+            transition: color 0.4s;
+        }
+        .navops{
+            display:flex;
+            align-items:center;
+            column-gap: 1rem;
+        }
+
+        #nav__search,
+        #nav__toggle,
+        #nav__login{
+            font-size: 2rem;
+            color: white;
+            cursor:pointer;
+            transition: color 0.4s;
+        }
+
+        #nav__close{
+            color:black;
+            font-size:2rem;
+        }
+
+        :is(#nav__search,
+        #nav__toggle,
+        #nav__login,
+        #nav__close,
+        .navlink):hover{
+            color: rgb(37, 167, 214);
+        }
+
+        @media screen {
+            .navmenu{
+                position:fixed;
+                top:-100%;
+                left:0;
+                background-color: white;
+                border-radius:5px;
+                width: 100%;
+                padding-block: 4.5rem 4rem;
+                transition: top 0.4s;
+            }
+        }
+
+        .navlist{
+            display:flex;
+            flex-direction: column;
+            row-gap: 2.5rem;
+            font-size:1.5rem;
+            text-align: center;
+            list-style:none;
+        }
+
+        .navlink{
+            color: var(--title-color);
+            font-weight: var(--font-semi-bold);
+            transition: color 0.4s;
+            text-decoration: none;
+            list-style:none;
+        }
+
+        .navclose{
+            position:absolute;
+            top: 1.15rem;
+            right:1.5rem;
+        }
+
+        .show-menu{
+            top:0;
+        }
+
+        /* Search */
+        .search,.login{
+            position: fixed;
+            top:0;
+            left:0;
+            width:99%;
+            height:100%;
+            z-index: var(--z-modal);
+            backdrop-filter: blur(10px);
+            padding: 8rem 0.5rem 0;
+            opacity:0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .search__form{
+            display:flex;
+            align-items: center;
+            column-gap: 1rem;
+            background-color: white;
+            box-shadow:0 8px 32px hsla(230, 75%, 32%, .2);
+            padding-inline: 1rem;
+            border-radius:0.5rem;
+            transform:translateY(-1rem);
+            transition: transform 0.5s;
+        }
+
+        .search_input{
+            width:100%;
+            border:none;
+            padding-block:1rem;
+            background-color: var(--container-color);
+            color: var(--text-color);
+            outline:none;
+        }
+
+        .search_input::placeholder{
+            color:var(--text-color);
+        }
+
+        #searchicon{
+            font-size:1.25rem;
+            padding-block: 1rem;
+            color:var(--title-color);
+            color: var(--text-color);
+            
+        }
+
+        #search_close,#login_close{
+            position:absolute;
+            top:2rem;
+            right:2rem;
+            cursor:pointer;
+            color: white;
+            font-size:1.5rem;
+
+        }
+        .show-search{
+            opacity:1;
+            pointer-events:initial;
+        }
+        .show-search.search__form{
+            transform: translateY(0);
+        }
+
+        /* Login */
+        .loginform,
+        .logingroup{
+            display:grid;
+            margin:auto;
+        }
+
+        .loginform{
+            background-color: rgba(255, 255, 255, 0.615);
+            padding: 2rem;
+            width:30%;
+            border-radius:1rem;
+            box-shadow: 0 8px 32px hsla(230, 75%, 32%, .2);
+            row-gap:1.5rem;
+            text-align:center;
+            transform: translateY(-1rem);
+            transition:transform 0.5s;
+        }
+
+        .logintitle{
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            font-size:1.5rem;
+        }
+
+        .logingroup{
+            row-gap:1rem;
+        }
+
+        .loginlabel{
+            display:flex;
+            text-align:initial;
+            margin-bottom: 0.25rem;
+        }
+
+        .loginbutton{
+            display:inline-block;
+            background-color:rgb(103,150,160);
+            color:white;
+            width:90%;
+            margin-top:1rem;
+            padding:1rem;
+            border-radius:0.5rem;
+            cursor:pointer;
+            transition: box-shadow 0.5s;
+        }
+
+        .loginbutton:hover{
+            box-shadow: 0 2px 20px rgb(24, 63, 72);
+        }
+
+        .show-login{
+            opacity:1;
+            pointer-events: initial;
+        }
+
+        .show-login.loginform{
+            transform: translateY(0);
+        }
+
+        #usericon{
+            transform:scale(4);
+        }
+
+        .diamond{
+            display:flex;
+            transform: scale(1.5)
+        }
+
+        /* Quote and Typewriter */
+        .quote{
+            position:absolute;
+            text-shadow:0 5px 24px black;
+            top:15rem;
+            left:15rem;
+            color:white;
+            font-size:4rem;
+            z-index:-1;
+        }
+
+        /* Bottom Half */
+
+        .container{
+            position:absolute;
+            left:0;
+            top:590px;
+            min-height:100vh;
+            width: 100%;
+            /* background-color: #191a2b; */
+            background-color:black;
+            z-index: -2;
+        }
+
+        .service-wrapper{
+            padding:5% 8%;
+        }
+
+        .services{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1{
+            color: white;
+            text-align: center;
+            font-size: 4rem;
+            letter-spacing: 4px;
+            background-color:white;
+            /* background-color: rgb(139, 197, 209); */
+            /* background:linear-gradient(8deg,rgba(8,52,83,1) 0%,rgba(0,230,172,1),rgba(41,17,45,1) 100%); */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            text-shadow:0 0 90px #72e2ae;
+        }
+        h1::after{
+            content: "";
+            position:absolute;
+            top:100%;
+            left: 10%;
+            height: 8px;
+            width: 80%;
+            border-radius: 8px;
+            background-color: rgba(255,255,255,0.05);
+        }
+
+        h1 span{
+            position: absolute;
+            top:100%;
+            left:10%;
+            height: 8px;
+            width: 80%;
+            border-radius: 50%;
+            background-color: white;
+            animation: anim 500ms linear infinite;
+            box-shadow: 0 2px 90px #72e2ae;
+        }
+
+        /* @keyframes anim {
+            95%{
+                opacity:1;
+            }
+            100%{
+                opacity: 0;
+                left: 88%;
+            }
+        } */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 80px;
+        }
+
+        .card{
+            height: 350px;
+            width:370px;
+            background-color: #1c2335;
+            padding:3% 8%;
+            border:0.2px solid rgba(114,226,174,0.2);
+            border-radius: 8px;
+            transition: 0.6s;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            border-bottom:10px solid teal;
+            
+        }
+
+        .card::after{
+            content: "";
+            position:absolute;
+            top:150%;
+            left:-200px;
+            width:120%;
+            transform: rotate(50deg);
+            background-color: white;
+            height: 18px;
+            filter:blur(30px);
+            opacity: 0.5;
+            transition: 1s;
+        }
+
+        .card:hover:after{
+            width: 225%;
+            top:-100%;
+        }
+
+        .card i{
+            color:#72e2ae;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 4rem;
+        }
+
+        .cards h2{
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+
+
+        }
+
+        .card p{
+            text-align: left;
+            width: 100%;
+            margin:12px 0;
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+        }
+
+        .card:hover{
+            background-color: transparent;
+            transform: translateY(-8px);
+            border-color: #00ff37;
+            cursor: pointer;
+        }
+
+        .card:hover i{
+            color: #00ff37;
+        }
+
+        @media screen and  (max-width:900px){
+            .cards{
+                grid-template-columns: repeat(1,1fr);
+            }
+            h1{
+                font-size: 3.5rem;
+            }
+        }
+
+    </style>
+</head>
+
+<header>
+    <nav class="navbar">
+        
+        <a href="#" class="navlogo">Laundry-Xperts</a>
+
+        <div class="navmenu" id="nav__menu">
+            <ul class="navlist" id="nav__list">
+                <li class="navitem">
+                    <a href="page2_home.html" class="navlink">Home</a>
+                </li>
+                <li class="navitem">
+                    <a href="addtocart.html" class="navlink">Cart</a>
+                </li>
+                <li class="navitem">
+                    <a href="about_us.html" class="navlink">About us</a>
+                </li>
+                <li class="navitem">
+                    <a href="contactus.html" class="navlink">Contact-Us</a>
+                </li>
+            </ul>
+            <div class="navclose">
+                <i class="ri-close-fill" id="nav__close"></i>
+            </div>
+        </div>
+        
+        <div class="navops">
+            <i class="ri-search-2-line" id="nav__search"></i>
+            <i class="ri-user-3-line" id="nav__login"></i>
+            <div class="navtoggle">
+                <i class="ri-menu-3-line" id="nav__toggle"></i>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<body>
+    <div class="bgimage"> </div>
+
+    <div class="search" id="search">
+        <form class="search__form">
+            <i class="ri-search-2-line" id="searchicon"></i>
+            <input type="search" class="search_input" placeholder="What are you searching for?">
+        </form>
+        <i class="ri-close-line" id="search_close"></i>
+    </div>
+
+    <div class="login" id="login">
+        <form  class="loginform">
+           <h2 class="logintitle">Welcome User</h2>
+           <i class="ri-user-smile-fill" id="usericon"></i>
+           <br>
+           <div class="logingroup">
+                <div class="diamond">
+                    <i class="ri-vip-diamond-line"></i>
+                    &nbsp;&nbsp;Diamond Customer
+                </div>
+           </div>
+
+           <div>
+                <button type="button" class="loginbutton" id="logout"> Log Out </button>
+           </div>
+        </form>
+
+        <i class="ri-close-line" id="login_close"></i>
+     </div>
+
+     <div class="quote">
+        Your One Stop Solution for all Laundry Needs
+     </div>
+
+     <div class="container">
+        <div class="service-wrapper">
+            <div class="service">
+                <h1> Services <span></span></h1>
+                <div class="cards">
+                    <div class="card">
+                        <i class="fa-solid fa-certificate"></i>
+                        <h2>Dry Cleaning</h2>
+                        <p>Our dry cleaning method incorporates a chemical solvent that contains little or no water. The triple filter of the solvent makes it crystal clear. Inside the dry cleaning machines, the solvent removes stains and dirt completely from the surface but does not enter inside.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-shirt"></i>
+                        <h2>Steaming & Pressing</h2>
+                        <p>guarantees professional ironing of your clothes using dry and steam irons. Our ironing experts are well-trained and knowledgeable about the proper methods of ironing different clothes so that your weary clothes get back their new wrinkle-free immaculate looks once again.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-couch"></i>
+                        <h2>Sofa Cleaning</h2>
+                        <p>We clean your sofa with the best cleaning solutions for different types of materials of the sofa. Synthetic-based fabrics are been washed with water-based cleaning agents to remove dust and stain. Our cleaning professionals use appropriate professional equipment to clean and dry your sofa and save it from germs and pests.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-soap"></i>
+                        <h2>Polishing</h2>
+                        <p>Utilize coarse and rough polishing for sturdy fabrics like nylon and high-grade cotton to enhance low-resilience textiles. Employ intermediate and fine polishing for soft materials, elevating synthetic and rayon velvets known for their resilience</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-house-chimney-window"></i>
+                        <h2>Doorstep Service</h2>
+                        <p>You tell us when you need it and you will have it right on time.Our pickup and delivery associates will receive your dirty clothes from your home and deliver them to you after cleaning. We want our laundry service to be so smooth and organized that it can help make your daily life a little less rushing and laborious.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <h2>Free Pickup & Delivery</h2>
+                        <p>We understand the importance of time in this highly urbanized society where everyone is running for their career and professional life. Therefore, we take the responsibility to provide you with hassle-free, swift laundry services.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="width:99.9%;text-align:center;margin-left:0;background-color: white;height:5px;">
+    </div>
+
+</body>
+
+<footer>
+    
+</footer>
+
+<script>
+    const navMenu = document.getElementById('nav__menu'),
+    navToggle = document.getElementById('nav__toggle'),
+    navClose = document.getElementById('nav__close');
+
+    navToggle.addEventListener('click', () => {
+        navMenu.classList.add('show-menu');
+    });
+
+    navClose.addEventListener('click', () => {
+        navMenu.classList.remove('show-menu');
+    });
+
+    // Search
+
+    const search = document.getElementById('search'),
+        searchButton = document.getElementById('nav__search'),
+        searchClose = document.getElementById('search_close');
+
+    searchButton.addEventListener('click', () => {
+        search.classList.add('show-search');
+    });
+
+    searchClose.addEventListener('click', () => {
+        search.classList.remove('show-search');
+    });
+
+    // login
+
+    const login = document.getElementById('login');
+    const loginButton = document.getElementById('nav__login');
+    const loginClose = document.getElementById('login_close');
+
+    loginButton.addEventListener('click', () => {
+        login.classList.add('show-login');
+    });
+
+    loginClose.addEventListener('click', () => {
+        login.classList.remove('show-login');
+    });
+
+    // logout
+
+    var logout_button=document.getElementById("logout");
+
+    logout_button.addEventListener("click",function(){
+        window.location.href="index.html";
+    });
+
+</script>
+</html>
